@@ -36,17 +36,24 @@ import com.owlplug.plugin.model.PluginState;
 import com.owlplug.plugin.services.PluginService;
 import com.owlplug.plugin.ui.PluginComponentCellFactory;
 import com.owlplug.plugin.ui.PluginStateView;
+import com.owlplug.recipe.events.RecipeUpdateEvent;
+import com.owlplug.recipe.model.Recipe;
+import com.owlplug.recipe.services.RecipeService;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -75,6 +82,8 @@ public class PluginInfoController extends BaseController {
   private PluginTaskFactory pluginTaskFactory;
   @Autowired
   private DisablePluginDialogController disableController;
+  @Autowired
+  private RecipeService recipeService;
 
   @FXML
   private Pane pluginScreenshotPane;
@@ -112,6 +121,18 @@ public class PluginInfoController extends BaseController {
   private ToggleSwitch nativeDiscoveryToggleButton;
   @FXML
   private Label lastScanErrorLabel;
+  @FXML
+  private ListView<Recipe> recipeListView;
+  @FXML
+  private ComboBox<Recipe> recipeComboBox;
+  @FXML
+  private Button addToRecipeButton;
+  @FXML
+  private Button removeFromRecipeButton;
+  @FXML
+  private TextField newRecipeTextField;
+  @FXML
+  private Button createRecipeButton;
 
   private final ObjectProperty<Plugin> pluginProperty = new SimpleObjectProperty<Plugin>();
   private final ArrayList<String> knownPluginImages = new ArrayList<>();
@@ -169,6 +190,27 @@ public class PluginInfoController extends BaseController {
       }
     });
 
+    addToRecipeButton.setOnAction(e -> {
+      Plugin plugin = pluginProperty.get();
+      Recipe recipe = recipeComboBox.getSelectionModel().getSelectedItem();
+      if (plugin != null && recipe != null) {
+        recipeService.addPluginToRecipe(recipe, plugin);
+        refreshRecipes();
+      }
+    });
+
+    removeFromRecipeButton.setOnAction(e -> {
+      Plugin plugin = pluginProperty.get();
+      Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
+      if (plugin != null && recipe != null) {
+        recipeService.removePluginFromRecipe(recipe, plugin);
+        refreshRecipes();
+      }
+    });
+
+    createRecipeButton.setOnAction(e -> createRecipeAndAddPlugin());
+    newRecipeTextField.setOnAction(e -> createRecipeAndAddPlugin());
+
   }
 
   public void refresh() {
@@ -223,6 +265,42 @@ public class PluginInfoController extends BaseController {
       pluginStateView.setPluginState(data.state());
       pluginComponentListView.setItems(FXCollections.observableList(data.components()));
     }));
+
+    refreshRecipes();
+  }
+
+  private void refreshRecipes() {
+    Plugin plugin = pluginProperty.get();
+    if (plugin == null || plugin.getId() == null) {
+      recipeListView.setItems(FXCollections.observableArrayList());
+      recipeComboBox.setItems(FXCollections.observableArrayList());
+      return;
+    }
+
+    List<Recipe> linkedRecipes = recipeService.getRecipesByPlugin(plugin);
+    Set<Long> linkedRecipeIds = linkedRecipes.stream()
+        .map(Recipe::getId)
+        .collect(Collectors.toSet());
+    List<Recipe> availableRecipes = recipeService.getAllRecipes().stream()
+        .filter(recipe -> !linkedRecipeIds.contains(recipe.getId()))
+        .collect(Collectors.toList());
+
+    recipeListView.setItems(FXCollections.observableList(linkedRecipes));
+    recipeComboBox.setItems(FXCollections.observableList(availableRecipes));
+    recipeComboBox.getSelectionModel().clearSelection();
+  }
+
+  private void createRecipeAndAddPlugin() {
+    Plugin plugin = pluginProperty.get();
+    String recipeName = newRecipeTextField.getText();
+    if (plugin == null || recipeName == null || recipeName.isBlank()) {
+      return;
+    }
+
+    Recipe recipe = recipeService.createRecipe(recipeName.trim());
+    recipeService.addPluginToRecipe(recipe, plugin);
+    newRecipeTextField.clear();
+    refreshRecipes();
   }
 
   private record PluginRefreshData(PluginState state, List<PluginComponent> components) {}
@@ -297,8 +375,12 @@ public class PluginInfoController extends BaseController {
     FX.run(this::refresh);
   }
 
+  @EventListener
+  private void handle(RecipeUpdateEvent event) {
+    FX.run(this::refreshRecipes);
+  }
+
   public ObjectProperty<Plugin> pluginProperty() {
     return pluginProperty;
   }
 }
-

@@ -5,7 +5,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -118,6 +120,24 @@
             </Button>
          </HBox>
       </GridPane>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="190.0" styleClass="card-title">
+         <Label text="Recipes"/>
+      </HBox>
+      <VBox spacing="5.0">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
+         </padding>
+         <ListView fx:id="recipeListView" maxWidth="1.7976931348623157E308" prefHeight="76.0"/>
+         <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <ComboBox fx:id="recipeComboBox" prefWidth="220.0" promptText="Existing recipe"/>
+            <Button fx:id="addToRecipeButton" text="Add"/>
+            <Button fx:id="removeFromRecipeButton" text="Remove"/>
+         </HBox>
+         <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <TextField fx:id="newRecipeTextField" prefWidth="220.0" promptText="New recipe"/>
+            <Button fx:id="createRecipeButton" text="Create and add"/>
+         </HBox>
+      </VBox>
       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="190.0" styleClass="card-title">
          <Label text="Components"/>
       </HBox>

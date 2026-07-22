@@ -96,6 +96,20 @@
             </HBox>
         </GridPane>
         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="190.0" styleClass="card-title">
+            <Label text="Recipes"/>
+        </HBox>
+        <VBox spacing="5.0">
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
+            </padding>
+            <ListView fx:id="recipeListView" maxWidth="1.7976931348623157E308" prefHeight="76.0"/>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+                <ComboBox fx:id="recipeComboBox" prefWidth="220.0" promptText="Existing recipe"/>
+                <Button fx:id="addToRecipeButton" text="Add"/>
+                <Button fx:id="removeFromRecipeButton" text="Remove"/>
+            </HBox>
+        </VBox>
+        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="190.0" styleClass="card-title">
             <Label text="Plugins"/>
         </HBox>
         <TableView fx:id="pluginTable" prefHeight="200.0" prefWidth="200.0">

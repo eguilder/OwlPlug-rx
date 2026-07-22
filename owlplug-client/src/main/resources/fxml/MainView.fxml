@@ -30,6 +30,7 @@
                 <Tab text="Plugins" closable="false"/>
                 <Tab text="Explore" closable="false"/>
                 <Tab text="Projects" closable="false"/>
+                <Tab text="Recipes" closable="false"/>
                 <Tab text="Options" closable="false"/>
             </TabPane>
             <HBox fx:id="updatePane" alignment="CENTER_LEFT" prefHeight="45.0" spacing="5.0">
@@ -67,6 +68,9 @@
                                 </Tab>
                                 <Tab closable="false" text="Projects">
                                     <fx:include fx:id="projectView" source="projects/ProjectsView.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="Recipes">
+                                    <fx:include fx:id="recipeView" source="recipes/RecipesView.fxml"/>
                                 </Tab>
                                 <Tab closable="false" text="Options">
                                     <fx:include fx:id="optionView" source="OptionsView.fxml"/>
