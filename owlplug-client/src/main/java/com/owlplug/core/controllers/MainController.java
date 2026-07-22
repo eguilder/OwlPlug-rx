@@ -99,7 +99,8 @@ public class MainController extends BaseController {
   public static int PLUGINS_TAB_INDEX = 1;
   public static int EXPLORE_TAB_INDEX = 2;
   public static int PROJECTS_TAB_INDEX = 3;
-  public static int SETTINGS_TAB_INDEX = 4;
+  public static int RECIPES_TAB_INDEX = 4;
+  public static int SETTINGS_TAB_INDEX = 5;
 
   /**
    * FXML initialize method.

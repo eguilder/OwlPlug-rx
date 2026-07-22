@@ -45,6 +45,11 @@
                         <FontIcon iconLiteral="mdi2f-folder-music-outline" />
                     </graphic>
                 </Tab>
+                <Tab text="Recipes" closable="false">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2b-book-open-page-variant-outline" />
+                    </graphic>
+                </Tab>
                 <Tab text="Settings" closable="false">
                     <graphic>
                         <FontIcon iconLiteral="mdi2c-cog-outline" />
@@ -82,6 +87,9 @@
                                 </Tab>
                                 <Tab closable="false" text="Projects">
                                     <fx:include fx:id="projectView" source="projects/ProjectsView.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="Recipes">
+                                    <fx:include fx:id="recipeView" source="recipes/RecipesView.fxml"/>
                                 </Tab>
                                 <Tab closable="false" text="Settings">
                                     <fx:include fx:id="settingsView" source="SettingsView.fxml"/>

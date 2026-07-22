@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.owlplug.recipe.controllers.RecipesController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="5">
+            <TextField fx:id="newRecipeNameTextField" prefHeight="27.0" prefWidth="240.0" promptText="New recipe"/>
+            <Button fx:id="createRecipeButton" text="Create"/>
+        </HBox>
+    </top>
+    <center>
+        <HBox spacing="12.0">
+            <VBox minWidth="220.0" prefWidth="260.0" HBox.hgrow="NEVER">
+                <HBox alignment="CENTER_LEFT" styleClass="card-title">
+                    <Label text="Recipes"/>
+                </HBox>
+                <ListView fx:id="recipeListView" VBox.vgrow="ALWAYS"/>
+            </VBox>
+            <VBox fx:id="recipeDetailsPane" spacing="8.0" HBox.hgrow="ALWAYS">
+                <styleClass>
+                    <String fx:value="pane-card"/>
+                    <String fx:value="no-padding"/>
+                </styleClass>
+                <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="card-title">
+                    <Label text="Recipe"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="saveRecipeButton" text="Save"/>
+                    <Button fx:id="deleteRecipeButton" styleClass="button-danger" text="Delete"/>
+                </HBox>
+                <GridPane hgap="8.0" vgap="8.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="90.0"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0"/>
+                        <RowConstraints minHeight="90.0"/>
+                    </rowConstraints>
+                    <padding>
+                        <Insets bottom="4.0" left="12.0" right="12.0" top="4.0"/>
+                    </padding>
+                    <Label text="Name"/>
+                    <TextField fx:id="recipeNameTextField" GridPane.columnIndex="1"/>
+                    <Label text="Description" GridPane.rowIndex="1"/>
+                    <TextArea fx:id="recipeDescriptionTextArea" prefRowCount="3" wrapText="true"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+                <HBox spacing="12.0" VBox.vgrow="ALWAYS">
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" styleClass="card-title">
+                            <Label text="Linked Plugins"/>
+                        </HBox>
+                        <ListView fx:id="linkedPluginListView" VBox.vgrow="ALWAYS"/>
+                        <Button fx:id="removePluginButton" text="Remove Plugin"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="5.0" HBox.hgrow="NEVER">
+                        <Button fx:id="addPluginButton" text="Add"/>
+                    </VBox>
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" styleClass="card-title">
+                            <Label text="Available Plugins"/>
+                        </HBox>
+                        <TextField fx:id="pluginSearchTextField" promptText="Search plugins"/>
+                        <ListView fx:id="availablePluginListView" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </HBox>
+                <HBox spacing="12.0" VBox.vgrow="ALWAYS">
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" styleClass="card-title">
+                            <Label text="Linked Projects"/>
+                        </HBox>
+                        <ListView fx:id="linkedProjectListView" VBox.vgrow="ALWAYS"/>
+                        <Button fx:id="removeProjectButton" text="Remove Project"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="5.0" HBox.hgrow="NEVER">
+                        <Button fx:id="addProjectButton" text="Add"/>
+                    </VBox>
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" styleClass="card-title">
+                            <Label text="Available Projects"/>
+                        </HBox>
+                        <TextField fx:id="projectSearchTextField" promptText="Search projects"/>
+                        <ListView fx:id="availableProjectListView" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+    <padding>
+        <Insets bottom="10.0" left="20.0" right="20.0" top="2.0"/>
+    </padding>
+</BorderPane>
