@@ -20,6 +20,7 @@ package com.owlplug.project.controllers;
 
 import com.owlplug.core.controllers.BaseController;
 import com.owlplug.core.controllers.MainController;
+import com.owlplug.core.utils.FX;
 import com.owlplug.core.utils.PlatformUtils;
 import com.owlplug.core.utils.TimeUtils;
 import com.owlplug.plugin.controllers.PluginsController;
@@ -29,15 +30,23 @@ import com.owlplug.plugin.ui.PluginFormatBadgeView;
 import com.owlplug.project.model.DawPlugin;
 import com.owlplug.project.model.DawProject;
 import com.owlplug.project.model.LookupResult;
+import com.owlplug.recipe.events.RecipeUpdateEvent;
+import com.owlplug.recipe.model.Recipe;
+import com.owlplug.recipe.services.RecipeService;
 import java.io.File;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,6 +64,7 @@ import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -65,6 +75,8 @@ public class ProjectInfoController extends BaseController {
   @Autowired
   @Lazy
   private MainController mainController;
+  @Autowired
+  private RecipeService recipeService;
 
   @FXML
   private VBox projectInfoPane;
@@ -102,6 +114,14 @@ public class ProjectInfoController extends BaseController {
   private TableColumn<DawPlugin, String> pluginTableStatusColumn;
   @FXML
   private TableColumn<DawPlugin, PluginComponent> pluginTableLinkColumn;
+  @FXML
+  private ListView<Recipe> recipeListView;
+  @FXML
+  private ComboBox<Recipe> recipeComboBox;
+  @FXML
+  private Button addToRecipeButton;
+  @FXML
+  private Button removeFromRecipeButton;
 
   private final ObjectProperty<DawProject> projectProperty = new SimpleObjectProperty<>();
 
@@ -224,6 +244,24 @@ public class ProjectInfoController extends BaseController {
       }
     });
 
+    addToRecipeButton.setOnAction(e -> {
+      DawProject project = projectProperty.get();
+      Recipe recipe = recipeComboBox.getSelectionModel().getSelectedItem();
+      if (project != null && recipe != null) {
+        recipeService.addProjectToRecipe(recipe, project);
+        refreshRecipes();
+      }
+    });
+
+    removeFromRecipeButton.setOnAction(e -> {
+      DawProject project = projectProperty.get();
+      Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
+      if (project != null && recipe != null) {
+        recipeService.removeProjectFromRecipe(recipe, project);
+        refreshRecipes();
+      }
+    });
+
   }
 
   public void refresh() {
@@ -241,12 +279,39 @@ public class ProjectInfoController extends BaseController {
     projectPathLabel.setText(project.getPath());
 
     pluginTable.setItems(FXCollections.observableList(project.getPlugins().stream().toList()));
+    refreshRecipes();
 
     BackgroundImage bgImg = new BackgroundImage(this.getApplicationDefaults().getDawApplicationImage(project.getApplication()),
         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
     projectScreenshotPane.setBackground(new Background(bgImg));
 
+  }
+
+  private void refreshRecipes() {
+    DawProject project = projectProperty.get();
+    if (project == null || project.getId() == null) {
+      recipeListView.setItems(FXCollections.observableArrayList());
+      recipeComboBox.setItems(FXCollections.observableArrayList());
+      return;
+    }
+
+    List<Recipe> linkedRecipes = recipeService.getRecipesByProject(project);
+    Set<Long> linkedRecipeIds = linkedRecipes.stream()
+        .map(Recipe::getId)
+        .collect(Collectors.toSet());
+    List<Recipe> availableRecipes = recipeService.getAllRecipes().stream()
+        .filter(recipe -> !linkedRecipeIds.contains(recipe.getId()))
+        .collect(Collectors.toList());
+
+    recipeListView.setItems(FXCollections.observableList(linkedRecipes));
+    recipeComboBox.setItems(FXCollections.observableList(availableRecipes));
+    recipeComboBox.getSelectionModel().clearSelection();
+  }
+
+  @EventListener
+  private void handle(RecipeUpdateEvent event) {
+    FX.run(this::refreshRecipes);
   }
 
   public ObjectProperty<DawProject> projectProperty() {
