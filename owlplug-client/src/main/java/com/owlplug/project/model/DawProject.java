@@ -44,7 +44,7 @@ public class DawProject {
   private String appFullName;
   private String formatVersion;
   @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, orphanRemoval = true,
-          cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+          cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
   private Set<DawPlugin> plugins = new HashSet<>();
   private Date lastModifiedAt;
   private Date createdAt;

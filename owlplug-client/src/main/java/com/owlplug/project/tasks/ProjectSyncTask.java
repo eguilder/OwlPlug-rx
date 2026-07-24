@@ -28,9 +28,15 @@ import com.owlplug.project.tasks.discovery.ProjectExplorerException;
 import com.owlplug.project.tasks.discovery.ableton.AbletonProjectExplorer;
 import com.owlplug.project.tasks.discovery.reaper.ReaperProjectExplorer;
 import com.owlplug.project.tasks.discovery.studioone.StudioOneProjectExplorer;
+import com.owlplug.recipe.repositories.RecipeRepository;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +46,14 @@ public class ProjectSyncTask extends AbstractTask {
 
   private boolean hasParseErrors = false;
   private final DawProjectRepository projectRepository;
+  private final RecipeRepository recipeRepository;
   private final List<String> projectDirectories;
 
   public ProjectSyncTask(DawProjectRepository projectRepository,
+                         RecipeRepository recipeRepository,
                          List<String> projectDirectories) {
     this.projectRepository = projectRepository;
+    this.recipeRepository = recipeRepository;
     this.projectDirectories = projectDirectories;
     setName("Sync DAW projects");
   }
@@ -56,7 +65,10 @@ public class ProjectSyncTask extends AbstractTask {
     log.debug("Starting project sync task");
     this.updateProgress(0,1);
 
-    projectRepository.deleteAll();
+    Map<String, DawProject> existingProjects = StreamSupport.stream(projectRepository.findAll().spliterator(), false)
+            .filter(project -> project.getPath() != null)
+            .collect(HashMap::new, (map, project) -> map.put(project.getPath(), project), HashMap::putAll);
+    Set<String> synchronizedProjectPaths = new HashSet<>();
 
     // Collect files from all project directories
     List<File> baseFiles = new ArrayList<>();
@@ -90,7 +102,8 @@ public class ProjectSyncTask extends AbstractTask {
             this.updateMessage("Analyzing project file: " + file.getAbsolutePath());
             DawProject project = explorer.explore(file);
             if (project != null) {
-              projectRepository.save(project);
+              upsertProject(project, existingProjects);
+              synchronizedProjectPaths.add(project.getPath());
             }
           } catch (ProjectExplorerException e) {
             hasParseErrors = true;
@@ -101,6 +114,8 @@ public class ProjectSyncTask extends AbstractTask {
       }
     }
 
+    removeDeletedProjects(existingProjects, synchronizedProjectPaths);
+
     if (hasParseErrors) {
       this.updateMessage("Projects synchronized. Some files cannot be parsed, check application logs in Options.");
     } else {
@@ -109,5 +124,36 @@ public class ProjectSyncTask extends AbstractTask {
     this.updateProgress(1,1);
 
     return completed();
+  }
+
+  private void upsertProject(DawProject project, Map<String, DawProject> existingProjects) {
+    DawProject existingProject = existingProjects.get(project.getPath());
+    if (existingProject == null) {
+      projectRepository.save(project);
+      return;
+    }
+
+    existingProject.setApplication(project.getApplication());
+    existingProject.setAppFullName(project.getAppFullName());
+    existingProject.setCreatedAt(project.getCreatedAt());
+    existingProject.setFormatVersion(project.getFormatVersion());
+    existingProject.setLastModifiedAt(project.getLastModifiedAt());
+    existingProject.setName(project.getName());
+
+    existingProject.getPlugins().clear();
+    project.getPlugins().forEach(plugin -> {
+      plugin.setProject(existingProject);
+      existingProject.getPlugins().add(plugin);
+    });
+    projectRepository.save(existingProject);
+  }
+
+  private void removeDeletedProjects(Map<String, DawProject> existingProjects, Set<String> synchronizedProjectPaths) {
+    existingProjects.values().stream()
+            .filter(project -> !synchronizedProjectPaths.contains(project.getPath()))
+            .forEach(project -> {
+              recipeRepository.deleteProjectLinks(project.getId());
+              projectRepository.delete(project);
+            });
   }
 }

@@ -29,6 +29,7 @@ import com.owlplug.project.repositories.DawProjectRepository;
 import com.owlplug.project.services.PluginLookupService;
 import com.owlplug.project.tasks.PluginLookupTask;
 import com.owlplug.project.tasks.ProjectSyncTask;
+import com.owlplug.recipe.repositories.RecipeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -45,6 +46,8 @@ public class ProjectTaskFactory extends BaseTaskFactory {
   @Autowired
   private DawProjectRepository projectRepository;
   @Autowired
+  private RecipeRepository recipeRepository;
+  @Autowired
   private DawPluginRepository dawPluginRepository;
   @Autowired
   private ApplicationEventPublisher publisher;
@@ -53,7 +56,7 @@ public class ProjectTaskFactory extends BaseTaskFactory {
 
     List<String> directories = prefs.getList(ApplicationDefaults.PROJECT_DIRECTORY_KEY);
 
-    ProjectSyncTask task = new ProjectSyncTask(projectRepository, directories);
+    ProjectSyncTask task = new ProjectSyncTask(projectRepository, recipeRepository, directories);
     task.setOnSucceeded(e -> {
       createLookupTask().scheduleNow();
       publisher.publishEvent(new ProjectSyncEvent());

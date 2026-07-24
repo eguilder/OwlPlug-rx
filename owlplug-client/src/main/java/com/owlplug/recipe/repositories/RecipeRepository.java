@@ -20,11 +20,20 @@ package com.owlplug.recipe.repositories;
 
 import com.owlplug.recipe.model.Recipe;
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
   List<Recipe> findByPluginsId(Long pluginId);
 
   List<Recipe> findByProjectsId(Long projectId);
+
+  @Transactional
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Query(value = "delete from recipe_project where project_id = :projectId", nativeQuery = true)
+  void deleteProjectLinks(@Param("projectId") Long projectId);
 }
