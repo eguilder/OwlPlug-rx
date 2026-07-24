@@ -30,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PluginRepository extends JpaRepository<Plugin, Long>, JpaSpecificationExecutor<Plugin> {
 
   static Specification<Plugin> nameContains(String name) {
+    if (name == null) {
+      return (plugin, cq, cb) -> cb.disjunction();
+    }
     return (plugin, cq, cb) -> cb.like(cb.lower(plugin.get("name")), "%" + name.toLowerCase() + "%");
   }
 

@@ -30,6 +30,7 @@ import com.owlplug.project.repositories.DawProjectRepository;
 import com.owlplug.project.services.PluginLookupService;
 import com.owlplug.project.tasks.PluginLookupTask;
 import com.owlplug.project.tasks.ProjectSyncTask;
+import com.owlplug.recipe.repositories.RecipeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,6 +47,8 @@ public class ProjectTaskFactory extends BaseTaskFactory {
   @Autowired
   private DawProjectRepository projectRepository;
   @Autowired
+  private RecipeRepository recipeRepository;
+  @Autowired
   private DawPluginRepository dawPluginRepository;
   @Autowired
   private ApplicationEventPublisher publisher;
@@ -55,7 +58,7 @@ public class ProjectTaskFactory extends BaseTaskFactory {
     List<String> directories = prefs.getList(Prefs.Projects.DIRECTORY);
     boolean collectBackupFiles = prefs.getBoolean(Prefs.Projects.COLLECT_BACKUP_FILES, false);
 
-    ProjectSyncTask task = new ProjectSyncTask(projectRepository, directories, collectBackupFiles);
+    ProjectSyncTask task = new ProjectSyncTask(projectRepository, recipeRepository, directories, collectBackupFiles);
     task.setOnSucceeded(e -> {
       createLookupTask().scheduleNow();
       publisher.publishEvent(new ProjectSyncEvent());
