@@ -20,7 +20,7 @@ package com.owlplug.explore.model;
 
 public enum SourceType {
 
-  OWLPLUG_REGISTRY("owlplug-registry", "OwlPlug Registry", "R"),
+  OWLPLUG_REGISTRY("owlplug-registry", "OwlPlug-rx Registry", "R"),
   OAS_REGISTRY("open-audio-stack-registry", "OAS Registry", "O");
 
   private final String value;

@@ -244,7 +244,7 @@ public class OptionsController extends BaseController {
       DialogLayout layout = new DialogLayout();
       layout.setHeading(new Label("Remove user data"));
       layout.setBody(new Label("Do you really want to remove all user data including accounts, "
-          + "stores and custom settings ? \n\nYou must restart OwlPlug for a complete reset."));
+          + "stores and custom settings ? \n\nYou must restart OwlPlug-rx for a complete reset."));
 
       Button cancelButton = new Button("Cancel");
       cancelButton.setOnAction(cancelEvent -> {

@@ -58,7 +58,7 @@ public class DonateDialogController extends AbstractDialogController {
       PlatformUtils.openDefaultBrowser(this.getApplicationDefaults().getEnvProperty("owlplug.donate.url"));
       this.close();
       this.getDialogManager()
-              .newSimpleInfoDialog("Thank  you !", "Thank you so much for contributing to OwlPlug development.\nYour donation will help me to release new versions, stay tuned !")
+              .newSimpleInfoDialog("Thank  you !", "Thank you so much for contributing to OwlPlug-rx development.\nYour donation will help me to release new versions, stay tuned !")
               .show();
     });
 
@@ -84,7 +84,7 @@ public class DonateDialogController extends AbstractDialogController {
   protected DialogLayout getLayout() {
     DialogLayout dialogLayout = new DialogLayout();
 
-    Label title = new Label("Owlplug is free !");
+    Label title = new Label("OwlPlug-rx is free !");
     title.getStyleClass().add("heading-3");
 
     dialogLayout.setHeading(title);

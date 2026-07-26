@@ -26,7 +26,7 @@
             </styleClass>
             <TabPane fx:id="tabPaneHeader" prefHeight="45.0" prefWidth="450.0" style="-fx-tab-min-height: 45;"
                      HBox.hgrow="ALWAYS" VBox.vgrow="NEVER">
-                <Tab disable="true" text="OwlPlug" closable="false"/>
+                <Tab disable="true" text="OwlPlug-rx" closable="false"/>
                 <Tab text="Plugins" closable="false"/>
                 <Tab text="Explore" closable="false"/>
                 <Tab text="Projects" closable="false"/>
@@ -37,7 +37,7 @@
                 <padding>
                     <Insets left="10.0" right="10.0"/>
                 </padding>
-                <Label text="New OwlPlug version available"/>
+                <Label text="New OwlPlug-rx version available"/>
                 <Button fx:id="downloadUpdateButton" text="Download">
                     <graphic>
                         <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -56,7 +56,7 @@
                         <VBox fx:id="contentPanePlaceholder">
                             <TabPane fx:id="tabPaneContent" prefHeight="100.0" prefWidth="441.0"
                                      styleClass="no-header-tab-pane" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                                <Tab closable="false" disable="true" text="OwlPlug">
+                                <Tab closable="false" disable="true" text="OwlPlug-rx">
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                 prefWidth="200.0"/>
                                 </Tab>

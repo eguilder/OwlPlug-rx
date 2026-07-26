@@ -97,7 +97,7 @@
                   </HBox>
                   <Label text="Permanently delete all stored user data including settings, remote sources and accounts. Plugins and projects files will not be deleted." wrapText="true" />
                   <Button fx:id="removeDataButton" minHeight="-Infinity" minWidth="-Infinity" text="Remove user data" />
-                  <Label text="Remove the data cached by OwlPlug (screenshots, remote metadata, ...)" wrapText="true" />
+                  <Label text="Remove the data cached by OwlPlug-rx (screenshots, remote metadata, ...)" wrapText="true" />
                   <Button fx:id="clearCacheButton" minHeight="-Infinity" minWidth="-Infinity" text="Clear cache" />
                </VBox>
                <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="145.0" VBox.vgrow="NEVER">
@@ -112,7 +112,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <TextFlow fx:id="versionTextFlow" prefHeight="25.0" prefWidth="309.0">
-                        <Label text="OwlPlug -" />
+                        <Label text="OwlPlug-rx -" />
                         <Label fx:id="versionLabel" text="?.?.?" wrapText="true" />
                         <Label text=" - Thanks to " />
                      </TextFlow>

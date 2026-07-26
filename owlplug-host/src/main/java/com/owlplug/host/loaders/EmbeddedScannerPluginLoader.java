@@ -82,10 +82,15 @@ public class EmbeddedScannerPluginLoader implements NativePluginLoader {
     log.debug("Init plugin loader");
     File scannerFile = new File(scannerDirectory, scannerId);
     if (!scannerFile.exists()) {
-      try {
-        ClassPathFileExtractor.extract(this.getClass(), DEFAULT_SCANNER_ID, scannerFile);
-      } catch (IOException e) {
-        log.error("Scanner executable can't be extracted to {}", scannerFile.getAbsolutePath());
+      if (ClassPathFileExtractor.exists(this.getClass(), DEFAULT_SCANNER_ID)) {
+        try {
+          ClassPathFileExtractor.extract(this.getClass(), DEFAULT_SCANNER_ID, scannerFile);
+        } catch (IOException e) {
+          log.error("Scanner executable can't be extracted to {}", scannerFile.getAbsolutePath(), e);
+        }
+      } else {
+        log.info("OwlPlug-rx scanner executable {} is not bundled. Embedded scanner loader disabled.",
+            DEFAULT_SCANNER_ID);
       }
     }
 
@@ -103,7 +108,7 @@ public class EmbeddedScannerPluginLoader implements NativePluginLoader {
       }
 
     } else {
-      log.error("Can't find owlplug scanner executable at {}", scannerFile.getPath());
+      log.debug("Can't find owlplug scanner executable at {}", scannerFile.getPath());
     }
 
   }
@@ -212,7 +217,7 @@ public class EmbeddedScannerPluginLoader implements NativePluginLoader {
 
   @Override
   public String getName() {
-    return "OwlPlug Scanner";
+    return "OwlPlug-rx Scanner";
   }
 
   @Override

@@ -78,7 +78,7 @@ public class ExploreService extends BaseService {
 
     if (owlplugRegistry == null) {
       owlplugRegistry = new RemoteSource();
-      owlplugRegistry.setName("OwlPlug Registry");
+      owlplugRegistry.setName("OwlPlug-rx Registry");
     }
     owlplugRegistry.setUrl(this.getApplicationDefaults().getOwlPlugRegistryUrl());
     owlplugRegistry.setDisplayUrl("https://registry.owlplug.com");

@@ -29,7 +29,7 @@ public abstract class AbstractTask extends Task<TaskResult> {
   
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  private String name = "OwlPlug task";
+  private String name = "OwlPlug-rx task";
 
   private Instant taskStarted;
 

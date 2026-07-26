@@ -137,7 +137,7 @@ public class WelcomeDialogController extends AbstractDialogController {
 
   @Override
   protected DialogLayout getLayout() {
-    Label title = new Label("Owlplug is almost ready !");
+    Label title = new Label("OwlPlug-rx is almost ready !");
     title.getStyleClass().add("heading-3");
     ImageView iv = new ImageView(this.getApplicationDefaults().rocketImage);
     iv.setFitHeight(20);

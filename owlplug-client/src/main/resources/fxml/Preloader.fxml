@@ -8,14 +8,15 @@
       style="-fx-background-color: linear-gradient(from 100px 200px to 101px 201px, #dfa579, #464646 100%);"
       styleClass="preloader" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.owlplug.core.controllers.PreloaderController">
-   <HBox fx:id="contributorsPane" layoutX="360.0" layoutY="130.0" prefHeight="30.0" prefWidth="212.0" spacing="5">
+   <HBox fx:id="contributorsPane" layoutX="360.0" layoutY="145.0" prefHeight="30.0" prefWidth="212.0" spacing="5">
       <Label text="Thanks to " styleClass="label-disabled"/>
    </HBox>
    <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="33.0" layoutY="36.0" pickOnBounds="true"
               preserveRatio="true">
       <Image url="@../media/owlplug-logo.png"/>
    </ImageView>
-   <Label layoutX="295.0" layoutY="36.0" style="-fx-font-size: 68;" text="OwlPlug"/>
+   <Label layoutX="270.0" layoutY="36.0" style="-fx-font-size: 68;" text="OwlPlug-rx"/>
+   <Label layoutX="305.0" layoutY="120.0" styleClass="label-disabled" text="This is a fork of Owlplug, by eguilder@github"/>
    <ProgressBar layoutY="297.0" prefWidth="600.0"/>
    <ImageView fitHeight="38.0" fitWidth="114.0" layoutX="349.0" layoutY="240.0" pickOnBounds="true"
               preserveRatio="true">

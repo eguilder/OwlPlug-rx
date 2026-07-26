@@ -97,8 +97,9 @@ public class OwlPlug extends Application {
 
     } catch (BeanCreationException e) {
       if (e.getRootCause() instanceof HibernateException) {
-        log.error("OwlPlug is maybe already running", e);
-        notifyPreloader(new PreloaderProgressMessage("error", "OwlPlug is maybe already running"));
+        log.error("{} is maybe already running", ApplicationDefaults.APPLICATION_NAME, e);
+        notifyPreloader(new PreloaderProgressMessage("error",
+            ApplicationDefaults.APPLICATION_NAME + " is maybe already running"));
       } else {
         log.error("Error during application context initialization", e);
         notifyPreloader(new PreloaderProgressMessage("error", "Error during application context initialization"));
@@ -106,8 +107,9 @@ public class OwlPlug extends Application {
 
       throw e;
     } catch (Exception e) {
-      log.error("OwlPlug could not be started", e);
-      notifyPreloader(new PreloaderProgressMessage("error", "OwlPlug could not be started"));
+      log.error("{} could not be started", ApplicationDefaults.APPLICATION_NAME, e);
+      notifyPreloader(new PreloaderProgressMessage("error",
+          ApplicationDefaults.APPLICATION_NAME + " could not be started"));
       throw e;
     }
   }

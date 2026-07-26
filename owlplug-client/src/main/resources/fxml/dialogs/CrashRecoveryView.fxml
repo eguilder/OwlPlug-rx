@@ -12,7 +12,7 @@
          <Image url="@../../media/owlplug-owl-crash.png" />
       </ImageView>
       <VBox>
-         <Label text="It's look like OwlPlug has not been terminated properly." wrapText="true" />
+         <Label text="It's look like OwlPlug-rx has not been terminated properly." wrapText="true" />
          <Label text="If a crash occurs during plugin sync, it's likely caused by a plugin that fails to load properly. Similar to other DAWs, a corrupted plugin can potentially crash the host application." wrapText="true" />
       </VBox>
    </HBox>
@@ -37,8 +37,8 @@
    <HBox VBox.vgrow="SOMETIMES">
       <TextFlow>
          <Label text="For more information about scanning plugins, check the " wrapText="true" />
-         <Hyperlink fx:id="troubleshootingLink" text="OwlPlug documentation" />
-         <Label text="If the problem persist and seems related to OwlPlug," wrapText="true" />
+         <Hyperlink fx:id="troubleshootingLink" text="OwlPlug-rx documentation" />
+         <Label text="If the problem persist and seems related to OwlPlug-rx," wrapText="true" />
          <Hyperlink fx:id="issuesLink" text="report the issue." />
       </TextFlow>
    </HBox>

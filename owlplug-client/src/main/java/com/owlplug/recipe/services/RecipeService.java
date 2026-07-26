@@ -91,6 +91,7 @@ public class RecipeService {
   public Recipe addPluginToRecipe(Recipe recipe, Plugin plugin) {
     Recipe managedRecipe = recipeRepository.findById(recipe.getId()).orElseThrow();
     Plugin managedPlugin = pluginRepository.findById(plugin.getId()).orElseThrow();
+    applyEditableFields(managedRecipe, recipe);
     managedRecipe.getPlugins().add(managedPlugin);
     managedRecipe.setUpdatedAt(new Date());
     Recipe savedRecipe = recipeRepository.save(managedRecipe);
@@ -101,6 +102,7 @@ public class RecipeService {
   @Transactional
   public Recipe removePluginFromRecipe(Recipe recipe, Plugin plugin) {
     Recipe managedRecipe = recipeRepository.findById(recipe.getId()).orElseThrow();
+    applyEditableFields(managedRecipe, recipe);
     managedRecipe.getPlugins().removeIf(p -> p.getId().equals(plugin.getId()));
     managedRecipe.setUpdatedAt(new Date());
     Recipe savedRecipe = recipeRepository.save(managedRecipe);
@@ -112,6 +114,7 @@ public class RecipeService {
   public Recipe addProjectToRecipe(Recipe recipe, DawProject project) {
     Recipe managedRecipe = recipeRepository.findById(recipe.getId()).orElseThrow();
     DawProject managedProject = dawProjectRepository.findById(project.getId()).orElseThrow();
+    applyEditableFields(managedRecipe, recipe);
     managedRecipe.getProjects().add(managedProject);
     managedRecipe.setUpdatedAt(new Date());
     Recipe savedRecipe = recipeRepository.save(managedRecipe);
@@ -122,10 +125,16 @@ public class RecipeService {
   @Transactional
   public Recipe removeProjectFromRecipe(Recipe recipe, DawProject project) {
     Recipe managedRecipe = recipeRepository.findById(recipe.getId()).orElseThrow();
+    applyEditableFields(managedRecipe, recipe);
     managedRecipe.getProjects().removeIf(p -> p.getId().equals(project.getId()));
     managedRecipe.setUpdatedAt(new Date());
     Recipe savedRecipe = recipeRepository.save(managedRecipe);
     publisher.publishEvent(new RecipeUpdateEvent());
     return savedRecipe;
+  }
+
+  private void applyEditableFields(Recipe target, Recipe source) {
+    target.setName(source.getName());
+    target.setDescription(source.getDescription());
   }
 }

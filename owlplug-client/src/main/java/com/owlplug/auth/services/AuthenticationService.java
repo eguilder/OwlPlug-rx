@@ -105,7 +105,7 @@ public class AuthenticationService extends BaseService {
       Credential credential = authCodeAccess.authorize(userAccount.getKey());
 
       Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
-          .setApplicationName("OwlPlug").build();
+          .setApplicationName("OwlPlug-rx").build();
       Userinfoplus userinfo = oauth2.userinfo().get().execute();
 
       userAccount.setName(userinfo.getName());

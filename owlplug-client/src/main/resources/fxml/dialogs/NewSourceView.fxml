@@ -17,7 +17,7 @@
    <VBox spacing="10.0">
       <Label text="Plugin source suggestions (3)"/>
       <HBox spacing="5.0">
-         <Button fx:id="owlplugSuggestionButton" text="OwlPlug Registry">
+         <Button fx:id="owlplugSuggestionButton" text="OwlPlug-rx Registry">
             <graphic>
                <Pane style="-fx-background-color: white;">
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
