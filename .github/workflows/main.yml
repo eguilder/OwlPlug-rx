@@ -219,7 +219,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: owlplug-installer-msi-${{ matrix.platform }}
-        path: build/output/OwlPlug-${{ env.version }}-${{ matrix.platform }}.msi
+        path: build/output/OwlPlug-rx-${{ env.version }}-${{ matrix.platform }}.msi
   package-osx-dmg:
     strategy:
       matrix:

@@ -7,7 +7,7 @@
 <VBox prefWidth="500.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.owlplug.core.controllers.dialogs.DonateDialogController">
    <VBox spacing="20.0">
-      <Label text="The OwlPlug app is completely free to use, offering all its features without any cost."
+      <Label text="The OwlPlug-rx app is completely free to use, offering all its features without any cost."
              wrapText="true" fx:id=""/>
       <Label text="However, to keep improving and developing the app, I rely on the support of users. If you enjoy using the app and would like to help me add new features and make it better, please consider donating. Your financial contribution will directly support ongoing development and ensure that I can keep the app available for everyone."
              wrapText="true"/>
@@ -28,7 +28,7 @@
             </graphic>
          </Button>
          <Button fx:id="aboutButton" contentDisplay="TOP" prefHeight="78.0" prefWidth="115.0"
-                 text="About OwlPlug">
+                 text="About OwlPlug-rx">
             <graphic>
                <SVGPath
                        content="M7 16h13v1h-13v-1zm13-3h-13v1h13v-1zm0-6h-5v1h5v-1zm0 3h-5v1h5v-1zm-17-8v17.199c0 .771-1 .771-1 0v-15.199h-2v15.98c0 1.115.905 2.02 2.02 2.02h19.958c1.117 0 2.022-.904 2.022-2.02v-17.98h-21zm19 17h-17v-15h17v15zm-9-12h-6v4h6v-4z"
@@ -45,7 +45,7 @@
          </Button>
 
       </HBox>
-      <Label text="If you like OwlPlug or want to see new features implemented, you can help me by clicking on the Donate button. It will redirect you to the donation page."
+      <Label text="If you like OwlPlug-rx or want to see new features implemented, you can help me by clicking on the Donate button. It will redirect you to the donation page."
              wrapText="true"/>
    </VBox>
    <HBox alignment="TOP_RIGHT" spacing="10.0" VBox.vgrow="NEVER">

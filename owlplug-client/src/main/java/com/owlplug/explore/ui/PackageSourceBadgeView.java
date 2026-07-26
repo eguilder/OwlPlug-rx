@@ -42,7 +42,7 @@ public class PackageSourceBadgeView extends HBox {
     this.isRoundBadge = isRoundBadge;
     if (remoteSource.getUrl() != null
             && remoteSource.getUrl().startsWith("https://registry.owlplug.com/registry")) {
-      String tooltipText = "Official OwlPlug Registry\nPackages content and integrity are verified";
+      String tooltipText = "Official OwlPlug-rx Registry\nPackages content and integrity are verified";
       createContent(applicationDefaults.verifiedSourceImage, applicationDefaults.owlplugLogoSmall, tooltipText);
     } else if (remoteSource.getUrl() != null
             && remoteSource.getUrl().startsWith("https://open-audio-stack.github.io/open-audio-stack-registry")) {

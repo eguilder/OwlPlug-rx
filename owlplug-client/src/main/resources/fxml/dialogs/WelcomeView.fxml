@@ -24,7 +24,7 @@
             <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../media/owlplug-logo.png"/>
             </ImageView>
-            <Label styleClass="heading-1" text="Welcome to OwlPlug"/>
+            <Label styleClass="heading-1" text="Welcome to OwlPlug-rx"/>
             <Label styleClass="label-disabled" text="Your plugin library, organized."/>
         </VBox>
 

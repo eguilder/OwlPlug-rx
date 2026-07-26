@@ -18,10 +18,10 @@ src/main/resources/credentials.properties
 *.dll
 *.dylib
 *.exe
+/owlplug-host/src/main/resources/owlplug-scanner-*-*
 
 # OwlPlug Host / Juce / C++ files
 /owlplug-host/src/main/juce/Builds
 
 # OSX Files
 .DS_Store
-

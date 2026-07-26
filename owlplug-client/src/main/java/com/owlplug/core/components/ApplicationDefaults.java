@@ -50,7 +50,7 @@ public class ApplicationDefaults {
 
   private static List<String> contributors;
 
-  public static final String APPLICATION_NAME = "OwlPlug";
+  public static final String APPLICATION_NAME = "OwlPlug-rx";
 
   // CHECKSTYLE:OFF
   public static final Image owlplugLogo = new Image(
