@@ -13,13 +13,13 @@ echo ** Copying owlplug-client-%owlplug-version%.jar to owlplug.jar **
 
 copy "..\owlplug-client\target\owlplug-client-%owlplug-version%.jar" ".\input\owlplug.jar"
 
-echo ** Generating OwlPlug MSI Install package **
+echo ** Generating OwlPlug-rx MSI Install package **
 
-jpackage --type msi --input ./input/ --name OwlPlug --main-class org.springframework.boot.loader.launch.JarLauncher ^
+jpackage --type msi --input ./input/ --name OwlPlug-rx --main-class org.springframework.boot.loader.launch.JarLauncher ^
 --main-jar owlplug.jar --license-file .\input\LICENSE --dest ./output ^
---app-version %owlplug-version% --icon .\resources\owlplug.ico --vendor OwlPlug ^
+--app-version %owlplug-version% --icon .\resources\owlplug.ico --vendor OwlPlug-rx ^
 --win-dir-chooser --win-menu --win-shortcut
 
-move ".\output\OwlPlug-%owlplug-version%.msi" ".\output\OwlPlug-%owlplug-version%-%target-platform%.msi"
+move ".\output\OwlPlug-rx-%owlplug-version%.msi" ".\output\OwlPlug-rx-%owlplug-version%-%target-platform%.msi"
 
-echo ** OwlPlug MSI Install package generated**
+echo ** OwlPlug-rx MSI Install package generated**

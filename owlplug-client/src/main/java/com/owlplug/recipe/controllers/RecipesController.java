@@ -214,11 +214,9 @@ public class RecipesController extends BaseController {
 
   private void saveSelectedRecipe() {
     Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
-    if (recipe == null || recipeNameTextField.getText() == null || recipeNameTextField.getText().isBlank()) {
+    if (!updateRecipeFromFields(recipe)) {
       return;
     }
-    recipe.setName(recipeNameTextField.getText().trim());
-    recipe.setDescription(recipeDescriptionTextArea.getText());
     recipeService.saveRecipe(recipe);
     refresh();
   }
@@ -235,7 +233,7 @@ public class RecipesController extends BaseController {
   private void addSelectedPlugin() {
     Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
     Plugin plugin = availablePluginListView.getSelectionModel().getSelectedItem();
-    if (recipe == null || plugin == null) {
+    if (plugin == null || !updateRecipeFromFields(recipe)) {
       return;
     }
     recipeService.addPluginToRecipe(recipe, plugin);
@@ -245,7 +243,7 @@ public class RecipesController extends BaseController {
   private void removeSelectedPlugin() {
     Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
     Plugin plugin = linkedPluginListView.getSelectionModel().getSelectedItem();
-    if (recipe == null || plugin == null) {
+    if (plugin == null || !updateRecipeFromFields(recipe)) {
       return;
     }
     recipeService.removePluginFromRecipe(recipe, plugin);
@@ -255,7 +253,7 @@ public class RecipesController extends BaseController {
   private void addSelectedProject() {
     Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
     DawProject project = availableProjectListView.getSelectionModel().getSelectedItem();
-    if (recipe == null || project == null) {
+    if (project == null || !updateRecipeFromFields(recipe)) {
       return;
     }
     recipeService.addProjectToRecipe(recipe, project);
@@ -265,11 +263,20 @@ public class RecipesController extends BaseController {
   private void removeSelectedProject() {
     Recipe recipe = recipeListView.getSelectionModel().getSelectedItem();
     DawProject project = linkedProjectListView.getSelectionModel().getSelectedItem();
-    if (recipe == null || project == null) {
+    if (project == null || !updateRecipeFromFields(recipe)) {
       return;
     }
     recipeService.removeProjectFromRecipe(recipe, project);
     refreshSelectedRecipe(recipe.getId());
+  }
+
+  private boolean updateRecipeFromFields(Recipe recipe) {
+    if (recipe == null || recipeNameTextField.getText() == null || recipeNameTextField.getText().isBlank()) {
+      return false;
+    }
+    recipe.setName(recipeNameTextField.getText().trim());
+    recipe.setDescription(recipeDescriptionTextArea.getText());
+    return true;
   }
 
   private void refreshSelectedRecipe(Long recipeId) {

@@ -19,6 +19,7 @@
 package com.owlplug.host.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,22 +31,24 @@ public class ClassPathFileExtractor {
 
   private static final Logger log = LoggerFactory.getLogger(ClassPathFileExtractor.class);
 
+  public static boolean exists(Class classRef, String resourceName) {
+    return classRef.getClassLoader().getResource(resourceName) != null;
+  }
+
   public static void extract(Class classRef, String resourceName, File outputFile) throws IOException {
 
     log.debug("Extracting resource to " + outputFile.getAbsolutePath());
     InputStream is = classRef.getClassLoader().getResourceAsStream(resourceName);
     if (is == null) {
-      log.error("Resource " + resourceName + " not in classpath");
+      throw new FileNotFoundException("Resource " + resourceName + " not in classpath");
     }
-    if (is != null) {
+
+    try (InputStream inputStream = is; FileOutputStream os = new FileOutputStream(outputFile)) {
       int read;
       byte[] buffer = new byte[4096];
-      FileOutputStream os = new FileOutputStream(outputFile);
-      while ((read = is.read(buffer)) != -1) {
+      while ((read = inputStream.read(buffer)) != -1) {
         os.write(buffer, 0, read);
       }
-      os.close();
-      is.close();
     }
 
   }
