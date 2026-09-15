@@ -29,6 +29,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.prefs.Preferences;
+import org.ehcache.StateTransitionException;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,9 +74,19 @@ public class StartupFailureTelemetry implements ApplicationListener<ApplicationF
   static String determinePhase(Throwable ex) {
     if (ex instanceof BeanCreationException) {
       Throwable rootCause = NestedExceptionUtils.getMostSpecificCause(ex);
-      return rootCause instanceof HibernateException ? "already_running" : "bean_creation";
+      return isAlreadyRunningCause(rootCause) ? "already_running" : "bean_creation";
     }
     return "generic";
+  }
+
+  static boolean isAlreadyRunningCause(Throwable rootCause) {
+    return rootCause instanceof HibernateException
+        || rootCause instanceof StateTransitionException
+        || hasMessage(rootCause, "Persistence directory already locked");
+  }
+
+  private static boolean hasMessage(Throwable ex, String message) {
+    return ex != null && ex.getMessage() != null && ex.getMessage().contains(message);
   }
 
   static String rootCauseClassName(Throwable ex) {

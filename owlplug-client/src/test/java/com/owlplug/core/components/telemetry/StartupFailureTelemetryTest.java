@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.ehcache.StateTransitionException;
 import org.hibernate.HibernateException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;
@@ -33,6 +34,15 @@ public class StartupFailureTelemetryTest {
   public void testShouldDetectAlreadyRunningPhaseFromHibernateRootCause() {
     HibernateException rootCause = new HibernateException("Database may be already in use");
     BeanCreationException ex = new BeanCreationException("dataSource", "Failed", rootCause);
+
+    assertEquals("already_running", StartupFailureTelemetry.determinePhase(ex));
+  }
+
+  @Test
+  public void testShouldDetectAlreadyRunningPhaseFromCacheLockRootCause() {
+    RuntimeException rootCause = new RuntimeException("Persistence directory already locked by another process");
+    BeanCreationException ex = new BeanCreationException("cacheManager", "Failed",
+        new StateTransitionException(rootCause));
 
     assertEquals("already_running", StartupFailureTelemetry.determinePhase(ex));
   }

@@ -35,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.sql.DataSource;
 import org.ehcache.CacheManager;
+import org.ehcache.StateTransitionException;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
@@ -51,6 +52,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
@@ -99,7 +101,7 @@ public class OwlPlug extends Application {
       FX.run(mainController::dispatchPostInitialize);
 
     } catch (BeanCreationException e) {
-      if (e.getRootCause() instanceof HibernateException) {
+      if (isAlreadyRunningException(e)) {
         log.error("{} is maybe already running", ApplicationDefaults.APPLICATION_NAME, e);
         notifyPreloader(new PreloaderProgressMessage("error",
             ApplicationDefaults.APPLICATION_NAME + " is maybe already running"));
@@ -149,6 +151,17 @@ public class OwlPlug extends Application {
 
     primaryStage.show();
 
+  }
+
+  private boolean isAlreadyRunningException(Throwable ex) {
+    Throwable rootCause = NestedExceptionUtils.getMostSpecificCause(ex);
+    return rootCause instanceof HibernateException
+        || rootCause instanceof StateTransitionException
+        || hasMessage(rootCause, "Persistence directory already locked");
+  }
+
+  private boolean hasMessage(Throwable ex, String message) {
+    return ex != null && ex.getMessage() != null && ex.getMessage().contains(message);
   }
   
 

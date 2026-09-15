@@ -16,10 +16,16 @@ if (-not (Test-Path -LiteralPath $scannerResource)) {
 }
 
 & "$env:MAVEN_HOME\bin\mvn.cmd" clean install
+if ($LASTEXITCODE -ne 0) {
+  exit $LASTEXITCODE
+}
 
 Push-Location ".\owlplug-client"
 try {
-  & "$env:MAVEN_HOME\bin\mvn.cmd" clean install spring-boot:repackage
+  & "$env:MAVEN_HOME\bin\mvn.cmd" install spring-boot:repackage
+  if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+  }
 } finally {
   Pop-Location
 }
