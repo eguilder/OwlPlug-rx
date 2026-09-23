@@ -20,8 +20,11 @@ package com.owlplug.recipe.controllers;
 
 import com.owlplug.core.controllers.BaseController;
 import com.owlplug.core.utils.FX;
+import com.owlplug.plugin.events.PluginRefreshEvent;
+import com.owlplug.plugin.events.PluginScanCompletedEvent;
 import com.owlplug.plugin.model.Plugin;
 import com.owlplug.plugin.services.PluginService;
+import com.owlplug.project.events.ProjectSyncEvent;
 import com.owlplug.project.model.DawProject;
 import com.owlplug.project.services.ProjectService;
 import com.owlplug.recipe.events.RecipeUpdateEvent;
@@ -313,6 +316,21 @@ public class RecipesController extends BaseController {
 
   @EventListener
   private void handle(RecipeUpdateEvent event) {
+    FX.run(this::refresh);
+  }
+
+  @EventListener
+  private void handle(ProjectSyncEvent event) {
+    FX.run(this::refresh);
+  }
+
+  @EventListener
+  private void handle(PluginScanCompletedEvent event) {
+    FX.run(this::refresh);
+  }
+
+  @EventListener
+  private void handle(PluginRefreshEvent event) {
     FX.run(this::refresh);
   }
 
