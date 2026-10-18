@@ -16,7 +16,8 @@
       <Image url="@../media/owlplug-logo.png"/>
    </ImageView>
    <Label layoutX="270.0" layoutY="36.0" style="-fx-font-size: 68;" text="OwlPlug-rx"/>
-   <Label layoutX="90.0" layoutY="120.0" styleClass="label-disabled"
+   <Label layoutX="0.0" layoutY="120.0" prefWidth="600.0" alignment="CENTER" textAlignment="CENTER"
+          styleClass="label-disabled"
           style="-fx-background-color: rgba(0, 0, 0, 0.35); -fx-background-radius: 4; -fx-padding: 4 8 4 8; -fx-text-fill: white;"
           text="This is a fork of Owlplug, by eguilder@github (v${project.version})"/>
    <ProgressBar layoutY="297.0" prefWidth="600.0"/>
