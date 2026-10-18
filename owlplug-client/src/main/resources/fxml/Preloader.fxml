@@ -16,7 +16,7 @@
       <Image url="@../media/owlplug-logo.png"/>
    </ImageView>
    <Label layoutX="270.0" layoutY="36.0" style="-fx-font-size: 68;" text="OwlPlug-rx"/>
-   <Label layoutX="305.0" layoutY="120.0" styleClass="label-disabled" text="This is a fork of Owlplug, by eguilder@github"/>
+   <Label layoutX="305.0" layoutY="120.0" styleClass="label-disabled" text="This is a fork of Owlplug, by eguilder@github (v${project.version})"/>
    <ProgressBar layoutY="297.0" prefWidth="600.0"/>
    <ImageView fitHeight="38.0" fitWidth="114.0" layoutX="349.0" layoutY="240.0" pickOnBounds="true"
               preserveRatio="true">
